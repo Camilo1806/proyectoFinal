@@ -17,4 +17,14 @@ router.get('/', (req,res,next)=>{
     .catch(next)
 })
 
+router.get('/terms', (req,res,next)=>{
+    res.download('./src/terms/terms.pdf', 'Terminos y condiciones.pdf', (err)=>{
+        if (err){
+            res.end(`Error: ${err}`)
+        } else{
+            console.log('File downloaded')
+        }
+    })
+})
+
 module.exports = router
