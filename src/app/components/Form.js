@@ -28,27 +28,30 @@ class Form extends Component{
     addUser(e){
         e.preventDefault();
 
+        if (/(^[a-zA-Z]+\s[a-zA-Z]+$)|(^[a-zA-Z]+$)/.test(this.state.nombres) && /(^[a-zA-Z]+\s[a-zA-Z]+$)|(^[a-zA-Z]+$)/.test(this.state.apellidos)){
+            const req = new Request('api/users', {
+                method:"POST",
+                body: JSON.stringify(this.state),
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json'
+                }
+            });
+    
+            fetch(req)
+            .then(res=>{
+                if (res.ok){
+                    return res.json()
+                } else{
+                    throw 'Error on call'
+                }
+            })
+            .then(data=>console.log(data))
+            .catch(err=>console.error(err))
+        }else{
+            M.toast({html:"Nombre o Apellido mal"})
+        }
         
-        
-        const req = new Request('api/users', {
-            method:"POST",
-            body: JSON.stringify(this.state),
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            }
-        });
-
-        fetch(req)
-        .then(res=>{
-            if (res.ok){
-                return res.json()
-            } else{
-                throw 'Error on call'
-            }
-        })
-        .then(data=>console.log(data))
-        .catch(err=>console.error(err))
     }
 
     render(){
