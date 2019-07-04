@@ -6,5 +6,3 @@ import App from './App';
 import Form from './components/Form'
 
 render(<Form />, document.getElementById('root'));
-
-console.log('cambio')
