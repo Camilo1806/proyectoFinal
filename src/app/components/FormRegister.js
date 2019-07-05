@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Form extends Component{
+class FormRegister extends Component{
 
     constructor(){
         super()
@@ -38,40 +38,59 @@ class Form extends Component{
         e.preventDefault();
         const regExp =  /(^[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+\s[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+$)|(^[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+$)/;
         const regExp2 = /([a-zA-Z]|[0-9]){9}/;
-        if (regExp.test(this.state.nombres) && regExp.test(this.state.apellidos) && regExp2.test(this.state.contraseña) && this.state.contraseña===this.state.confirm_contraseña){
-            const req = new Request('api/users', {
-                method:"POST",
-                body: JSON.stringify(this.state),
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json'
+
+        fetch(`/api/users/correo/${this.state.correo}`)
+        .then(res=>{
+            if (res.ok){
+                return res.json()
+            } else {
+                throw 'Error on call'
+            }
+        })
+        .then(data=>{
+            const exists = (data.exists==true) ? true : false
+            return exists
+        })
+        .then( e=>{
+            if (regExp.test(this.state.nombres) && regExp.test(this.state.apellidos) && regExp2.test(this.state.contraseña) && this.state.contraseña===this.state.confirm_contraseña && e!==true){
+                const req = new Request('/api/users', {
+                    method:"POST",
+                    body: JSON.stringify(this.state),
+                    headers:{
+                        'Accept':'application/json',
+                        'Content-Type':'application/json'
+                    }
+                });
+        
+                fetch(req)
+                .then(res=>{
+                    if (res.ok){
+                        return res.json()
+                    } else{
+                        throw 'Error on call'
+                    }
+                })
+                .then(data=>window.location.href="login.html")
+                .catch(err=>console.error(err))
+            }else{
+                if (!regExp.test(this.state.nombres)){
+                    M.toast({html:"Nombres invalidos"})
                 }
-            });
-    
-            fetch(req)
-            .then(res=>{
-                if (res.ok){
-                    return res.json()
-                } else{
-                    throw 'Error on call'
+                if(!regExp.test(this.state.apellidos)){
+                    M.toast({html:"Apellidos invalidos"})
                 }
-            })
-            .then(data=>console.log(data))
-            .catch(err=>console.error(err))
-        }else{
-            if (!regExp.test(this.state.nombres)){
-                M.toast({html:"Nombres invalidos"})
+                if (!regExp2.test(this.state.contraseña)){
+                    M.toast({html:"Contraseña invalida"})
+                }
+                if (this.state.contraseña!==this.state.confirm_contraseña){
+                    M.toast({html:"Las contraseñas no coinciden"})
+                }
+                if (e==true){
+                    M.toast({html:'Este correo está vinculado a otra cuenta'})
+                }
             }
-            if(!regExp.test(this.state.apellidos)){
-                M.toast({html:"Apellidos invalidos"})
-            }
-            if (!regExp2.test(this.state.contraseña)){
-                M.toast({html:"Contraseña invalida"})
-            }
-            if (this.state.contraseña!==this.state.confirm_contraseña){
-                M.toast({html:"Las contraseñas no coinciden"})
-            }
-        }
+        })
+        .catch(err=>console.error(err))       
     }
 
     render(){
@@ -139,7 +158,7 @@ class Form extends Component{
                             </div>
                             <div className="row">
                                 <div className="input-field col s12">
-                                    <input type="email" name="correo" placeholder="Correo electronico" onChange={this.catchData} required/>
+                                    <input type="email" name="correo" placeholder="Correo electrónico" onChange={this.catchData} required/>
                                 </div>
                             </div>
                             <div className="row">
@@ -157,7 +176,7 @@ class Form extends Component{
                             </div>
                             <div className="row">
                                 <div className="label col s12">
-                                    <label>¿Acepta <a href="api/users/terms" target="_blank">terminos y condiciones</a>?</label>
+                                    <label>¿Acepta <a href="/api/users/terms" target="_blank">terminos y condiciones</a>?</label>
                                 </div>
                                 <div >
                                     <label className="input-field col s12">
@@ -180,4 +199,4 @@ class Form extends Component{
         
 }
 
-export default Form;
+export default FormRegister;

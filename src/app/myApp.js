@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import Form from './components/Form'
+
+import FormRegister from './components/FormRegister';
+import FormLogin from './components/FormLogin';
+import Nav from './components/nav'
 
 class MyApp extends Component{
 
@@ -7,17 +10,15 @@ class MyApp extends Component{
         return(
             <div>
 
-                {/* Navegación */}
-                <nav className="light-blue darken-4">
-                    <div className="container">
-                        <a className="brand-logo" href="/">Registro | Inicio de sesión</a>
-                    </div>
-                </nav> 
+                <Nav />               
 
                 <div className="container">
                     <div className="row">
                         <div className="col s6">
-                            <Form />
+                            <FormRegister />
+                        </div>
+                        <div className="col s6">
+                            <FormLogin />
                         </div>
                     </div>
                 </div>
