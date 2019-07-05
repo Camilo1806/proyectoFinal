@@ -3,6 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
  
 import App from './App';
-import Form from './components/Form'
+import MyApp from './myApp';
 
-render(<Form />, document.getElementById('root'));
+render(<MyApp />, document.getElementById('root'));
