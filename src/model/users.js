@@ -16,7 +16,7 @@ const UserSchema= new Schema({
     },
     numero_documento:{
         type: String,
-        required: [true, 'Llena el campo numero documento']
+        required: [true, 'Llena el campo número documento']
     },
     fecha_expedicion:{
         type: String,
@@ -29,6 +29,18 @@ const UserSchema= new Schema({
     sexo:{
         type: String,
         required: [true, 'Llena el campo sexo']
+    },
+    numero_celular:{
+        type: String,
+        required: [true, 'Llena el campo número de celular']
+    },
+    correo:{
+        type: String,
+        required: [true, 'Llena el campo correo']
+    },
+    contraseña:{
+        type: String,
+        required: [true, 'Llena el campo contraseña']
     }
 })
 

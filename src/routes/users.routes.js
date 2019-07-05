@@ -5,6 +5,7 @@ const User = require('../model/users')
 
 router.post('/', (req,res,next)=>{
     const data = req.body;
+    console.log(data)
     const user = new User(data);
     user.save()
     .then(d=>res.json({status:"User saved"}))

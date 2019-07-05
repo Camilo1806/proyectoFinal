@@ -11,7 +11,10 @@ class Form extends Component{
             numero_documento: '',
             fecha_expedicion: '',
             fecha_nacimiento: '',
-            sexo: ''
+            sexo: '',
+            numero_celular: '',
+            correo: '',
+            contraseña: ''
         }
 
         this.catchData=this.catchData.bind(this)
@@ -27,30 +30,50 @@ class Form extends Component{
     
     addUser(e){
         e.preventDefault();
-
-        if (/(^[a-zA-Z]+\s[a-zA-Z]+$)|(^[a-zA-Z]+$)/.test(this.state.nombres) && /(^[a-zA-Z]+\s[a-zA-Z]+$)|(^[a-zA-Z]+$)/.test(this.state.apellidos)){
-            const req = new Request('api/users', {
-                method:"POST",
-                body: JSON.stringify(this.state),
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json'
-                }
-            });
-    
-            fetch(req)
-            .then(res=>{
-                if (res.ok){
-                    return res.json()
-                } else{
-                    throw 'Error on call'
-                }
-            })
-            .then(data=>console.log(data))
-            .catch(err=>console.error(err))
-        }else{
-            M.toast({html:"Nombre o Apellido mal"})
+        const regExp = /(^[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+\s[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+$)|(^[a-zA-Z,á|é|í|ó|ú|Á|É|Í|Ó|Ú]+$)/;
+        const regExp2 = /([a-zA-Z]|[0-9]){9}/;
+        if (regExp2.test(this.state.contraseña)){
+            console.log('bien')
+        } else{
+            console.log('mal')
         }
+    //     if (regExp.test(this.state.nombres) && regExp.test(this.state.apellidos) ){
+    //         const req = new Request('api/users', {
+    //             method:"POST",
+    //             body: JSON.stringify(this.state),
+    //             headers:{
+    //                 'Accept':'application/json',
+    //                 'Content-Type':'application/json'
+    //             }
+    //         });
+    
+    //         fetch(req)
+    //         .then(res=>{
+    //             if (res.ok){
+    //                 return res.json()
+    //             } else{
+    //                 throw 'Error on call'
+    //             }
+    //         })
+    //         .then(data=>console.log(data))
+    //         .catch(err=>console.error(err))
+    //     }else{
+    //         const a = (!regExp.test(this.state.nombres)) ? 1 : 0;
+    //         const b = (!regExp.test(this.state.apellidos)) ? 2 : 0;
+    //         const total = a + b
+
+    //         switch (total){
+    //             case 3:
+    //                 M.toast({html:"Nombres y apellidos invalidos"});
+    //             break;
+    //             case 2:
+    //                 M.toast({html:"Apellidos invalidos"});
+    //             break;
+    //             case 1:
+    //                 M.toast({html:"Nombres invalidos"});
+    //             break;
+    //         }
+    //     }
         
     }
 
@@ -123,12 +146,35 @@ class Form extends Component{
                                             </div>
                                         </div>
                                         <div className="row">
+                                            <div className="input-field col s12">
+                                                <input type="number" name="numero_celular" placeholder="Número de celular" onChange={this.catchData} selected></input>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="input-field col s12">
+                                                <input type="email" name="correo" placeholder="Correo electronico" onChange={this.catchData} selected/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="label col s12">
+                                                <label>Minimo 9 caracteres, solo se permiten números y/o letras.</label>
+                                            </div>
+                                            <div className="input-field col s12">
+                                                <input type="password" name="contraseña" placeholder="Contraseña" onChange={this.catchData} selected/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="input-field col s12">
+                                                <input type="password" name="confirm_contraseña" placeholder="Confirmar contraseña" onChange={this.catchData} selected/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
                                             <div className="label col s12">
                                                 <label>¿Acepta <a href="api/users/terms" target="_blank">terminos y condiciones</a>?</label>
                                             </div>
                                             <div >
                                                 <label className="input-field col s12">
-                                                <input type="checkbox" id="test" className="browser-default filled-in" required selected/>
+                                                <input type="checkbox" className="browser-default filled-in" selected/>
                                                 <span>Acepto terminos y condiciones</span>
                                                 </label>
                                             </div>
